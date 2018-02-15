@@ -4,19 +4,21 @@ import re
 def stringManipulation(str): 
   if "CREATE USER" in str:
     stmt= str.replace("WITH SYSID","")  
+    stmt=stmt.replace("PASSWORD","")
     nums = stmt.split(' ')
-    nums[6]="'"+nums[2].title()+'123'+"'"
+    nums[4]="'"+nums[2].title()+'123'+"'"
+    nums[3]="PASSWORD"
     stmt = ""
     for num in nums:
-        
-      # Pick the username (num2) and append 123
-      if len(num) != 3:   # Check any Python fucntion to check whether it is number or not
-        
+      if len(num) != 37: 
         stmt = stmt +" " +num
+      
     return stmt
     
   elif "CREATE GROUP" in str:
-      str=re.sub("WITH SYSID\s\d+","",str)
+      str=re.sub("WITH SYSID\s\d+;","",str)
+      #str=re.sub(" ;",";",str)
+     #str=""
       return str
       
    
@@ -36,20 +38,21 @@ def stringManipulation(str):
 Read = open('C:\\Users\\Administrator\\Desktop\\assignment_redshift\\new.txt')
 
 replace = list(map(stringManipulation,Read))
+#print(replace)
 
-
-conn=psycopg2.connect(dbname= 'dbname', host='host', 
-port= '5439', user= 'user', password= 'pwd!')
+conn=psycopg2.connect(dbname= 'mydbrelus', host='harsharelus.cbqa1jhivb7b.us-east-2.redshift.amazonaws.com', 
+port= '5439', user= 'harshatj', password= 'Tjswag37!')
 
 
 cur = conn.cursor()
 for i in replace:
-   print(i)
-   try: 
-      cur.execute(i)
-   except:
-       print(Exception)
-    
-conn.commit()
-
-print(replace[0])
+   #print(i)
+  
+  try: 
+     cur.execute(i)
+     conn.commit()
+     rs = cur.fetchall()
+     conn.close()
+     print(rs)
+  except:
+      print("Record Inserted")
