@@ -1,4 +1,3 @@
-import psycopg2
 import re
 
 def stringManipulation(str): 
@@ -16,9 +15,10 @@ def stringManipulation(str):
     return stmt
     
   elif "CREATE GROUP" in str:
-      str=re.sub("WITH SYSID\s\d+;","",str)
-      #str=re.sub(" ;",";",str)
-     #str=""
+      #nums = str.split(' ')
+      #str= str.replace("SYSID", "").replace("WITH", "")
+      str=re.sub("WITH SYSID\s\d+;",";",str)
+      str=re.sub(" ;",";",str)
       return str
       
    
@@ -34,25 +34,19 @@ def stringManipulation(str):
       return str    
   else: 
     return " " # Logic need to write, either empty string or word 
+   
   
-Read = open('C:\\Users\\Administrator\\Desktop\\assignment_redshift\\new.txt')
+inputread=open('C:\\Users\\admin\\Desktop\\ab.ddl',"r+") 
+output=(str(list(map(stringManipulation,inputread))))
+output1=re.sub('\[','',output)
+output2=re.sub('\]','',output1)
+output2=re.sub("\' '","",output2)
+output2=re.sub("\,","",output2)
+output2=re.sub('\"',"",output2)
+print(output2)
+with open('C:\\Users\\admin\\Desktop\\ab2.ddl',"w") as file:
+   
+    file.write(output2)
+       
+file.close()
 
-replace = list(map(stringManipulation,Read))
-#print(replace)
-
-conn=psycopg2.connect(dbname= 'mydbrelus', host='harsharelus.cbqa1jhivb7b.us-east-2.redshift.amazonaws.com', 
-port= '5439', user= 'harshatj', password= 'Tjswag37!')
-
-
-cur = conn.cursor()
-for i in replace:
-   #print(i)
-  
-  try: 
-     cur.execute(i)
-     conn.commit()
-     rs = cur.fetchall()
-     conn.close()
-     print(rs)
-  except:
-      print("Record Inserted")
