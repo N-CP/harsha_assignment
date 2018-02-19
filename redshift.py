@@ -31,22 +31,36 @@ def stringManipulation(str):
   elif "ALTER USER" in str:
       return str
   elif "SET" in str:
+      return str
+  elif "CREATE TABLE" or ";" in str:
+      #if "ALTER TABLE" not in str:
+          return str
+  elif "ALTER TABLE" in str:
+      return str
+  elif "CREATE SCHEMA" in str:
       return str    
+  elif "ALTER SCHEMA" in str:
+      return str  
+  elif "ALTER INDEX" in str:
+      return str  
+  elif "CREATE VIEW" in str:
+      return str 
   else: 
     return " " # Logic need to write, either empty string or word 
    
   
-inputread=open('C:\\Users\\admin\\Desktop\\ab.ddl',"r+") 
+inputread=open('C:\\Users\\admin\\Desktop\\nr.txt',"r+") 
 output=(str(list(map(stringManipulation,inputread))))
 output1=re.sub('\[','',output)
 output2=re.sub('\]','',output1)
 output2=re.sub("\' '","",output2)
-output2=re.sub("\,","",output2)
+output2=re.sub("\', '","",output2)
 output2=re.sub('\"',"",output2)
-print(output2)
+output2=re.sub('None','',output2)
+#print(output2)
 with open('C:\\Users\\admin\\Desktop\\ab2.ddl',"w") as file:
    
     file.write(output2)
-       
+   
+    
 file.close()
-
