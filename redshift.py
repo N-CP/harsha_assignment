@@ -33,7 +33,7 @@ def stringManipulation(str):
   elif "SET" in str:
       return str
   elif "CREATE TABLE" or ";" in str:
-      #if "ALTER TABLE" not in str:
+     
           return str
   elif "ALTER TABLE" in str:
       return str
@@ -45,22 +45,35 @@ def stringManipulation(str):
       return str  
   elif "CREATE VIEW" in str:
       return str 
+  elif "CREATE FUNCTION" in str:
+      str=str.replace(":","")
+      str=str.replace("STRICT;",";")
+      str=str.replace("IMMUTABLE","")
+      str=str.replace("$_$","")
+      str=str.replace("AS","STABLE AS $_$ select endtime")
+      str=str.replace("LANGUAGE","$_$    LANGUAGE")
+      return str 
+  elif "ALTER FUNCTION" in str:
+      return str
   else: 
     return " " # Logic need to write, either empty string or word 
    
   
-inputread=open('C:\\Users\\admin\\Desktop\\nr.txt',"r+") 
+inputread=open('C:\\Users\\admin\\Desktop\\syntex.txt',"r+") 
 output=(str(list(map(stringManipulation,inputread))))
 output1=re.sub('\[','',output)
 output2=re.sub('\]','',output1)
 output2=re.sub("\' '","",output2)
-output2=re.sub("\', '","",output2)
+output2=re.sub('None','',output2)
 output2=re.sub('\"',"",output2)
 output2=re.sub('None','',output2)
-#print(output2)
+output2=re.sub("\',",'',output2)
+output2=re.sub("\, ' ","",output2)
+output2=re.sub("\' ",'',output2)
+print(output2)
 with open('C:\\Users\\admin\\Desktop\\ab2.ddl',"w") as file:
    
-    file.write(output2)
+   file.write(output2)
    
     
 file.close()
