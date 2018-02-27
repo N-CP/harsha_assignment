@@ -31,16 +31,44 @@ def stringManipulation(str):
   elif "ALTER USER" in str:
       return str
   elif "SET" in str:
+      return str
+  elif "CREATE TABLE" or ";" in str:
+     
+          return str
+  elif "ALTER TABLE" in str:
+      return str
+  elif "CREATE SCHEMA" in str:
       return str    
+  elif "ALTER SCHEMA" in str:
+      return str  
+  elif "ALTER INDEX" in str:
+      return str  
+  elif "CREATE VIEW" in str:
+      return str 
+  elif "CREATE FUNCTION" in str:
+      str=str.replace(":","")
+      str=str.replace("STRICT;",";")
+      str=str.replace("IMMUTABLE","")
+      str=str.replace("$_$","")
+      str=str.replace("AS","STABLE AS $_$ select endtime")
+      str=str.replace("LANGUAGE","$_$    LANGUAGE")
+      return str 
+  elif "ALTER FUNCTION" in str:
+      return str
   else: 
     return " " # Logic need to write, either empty string or word 
    
   
+<<<<<<< HEAD
 inputread=open('C:\\Users\\admin\\Desktop\\ab.ddl',"r+") 
+=======
+inputread=open('C:\\Users\\admin\\Desktop\\syntex.txt',"r+") 
+>>>>>>> 67abcc6b12b43caa16b741ade15f2412c8945102
 output=(str(list(map(stringManipulation,inputread))))
 output1=re.sub('\[','',output)
 output2=re.sub('\]','',output1)
 output2=re.sub("\' '","",output2)
+<<<<<<< HEAD
 output2=re.sub("\,","",output2)
 output2=re.sub('\"',"",output2)
 print(output2)
@@ -50,3 +78,18 @@ with open('C:\\Users\\admin\\Desktop\\ab2.ddl',"w") as file:
        
 file.close()
 
+=======
+output2=re.sub('None','',output2)
+output2=re.sub('\"',"",output2)
+output2=re.sub('None','',output2)
+output2=re.sub("\',",'',output2)
+output2=re.sub("\, ' ","",output2)
+output2=re.sub("\' ",'',output2)
+print(output2)
+with open('C:\\Users\\admin\\Desktop\\ab2.ddl',"w") as file:
+   
+   file.write(output2)
+   
+    
+file.close()
+>>>>>>> 67abcc6b12b43caa16b741ade15f2412c8945102
